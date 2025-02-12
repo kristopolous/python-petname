@@ -16,14 +16,11 @@
 #  limitations under the License.
 
 
-import random, math
+import math
 from .english import adverbs, adjectives, names
 
-
-try:
-    random = random.SystemRandom()
-except NotImplementedError:
-    pass # less secure
+def keyspace():
+    return len(adjectives) * len(adverbs) * len(names) * 2
 
 def generate(separator: str = "-", index: int = None) -> str:
     petname = []
