@@ -25,20 +25,24 @@ def keyspace():
 def generate(separator: str = "-", index: int = None) -> str:
     petname = []
 
-    petname.append(adverbs[index % len(adverbs)])
-    index = math.floor(index / len(adverbs))
-    
-    petname.append(adjectives[index % len(adjectives)])
-    index = math.floor(index / len(adjectives))
-
     petname.append(names[index % len(names)])
     index = math.floor(index / len(names))
+
+    if index > 0:
+      petname.append(adjectives[index % len(adjectives)])
+      index = math.floor(index / len(adjectives))
+
+    if index > 0:
+      petname.append(adverbs[index % len(adverbs)])
+      index = math.floor(index / len(adverbs))
 
     if index % 2 == 1:
       petname[0], petname[1] = petname[1], petname[0]
 
     index = math.floor(index / 2)
 
+    petname.reverse()
+  
     if index > 0:
       petname.append(str(index))
 
