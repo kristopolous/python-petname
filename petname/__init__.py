@@ -16,55 +16,35 @@
 #  limitations under the License.
 
 
-import random
+import random, math
 from .english import adverbs, adjectives, names
 
 
 try:
-	random = random.SystemRandom()
+    random = random.SystemRandom()
 except NotImplementedError:
-	pass # less secure
+    pass # less secure
 
-def adverb(letters: int = 6) -> str:
-	while 1:
-		w = random.choice(adverbs)
-		if len(w) <= letters:
-			return w
+def generate(separator: str = "-", index: int = None) -> str:
+    petname = []
 
+    petname.append(adverbs[index % len(adverbs)])
+    index = math.floor(index / len(adverbs))
+    
+    petname.append(adjectives[index % len(adjectives)])
+    index = math.floor(index / len(adjectives))
 
-def adjective(letters: int = 6) -> str:
-	while 1:
-		w = random.choice(adjectives)
-		if len(w) <= letters:
-			return w
+    petname.append(names[index % len(names)])
+    index = math.floor(index / len(names))
 
+    if index % 2 == 1:
+      petname[0], petname[1] = petname[1], petname[0]
 
-def name(letters: int = 6) -> str:
-	while 1:
-		w = random.choice(names)
-		if len(w) <= letters:
-			return w
+    index = math.floor(index / 2)
 
+    if index > 0:
+      petname.append(str(index))
 
-def generate(words: int = 2, separator: str = "-", letters: int = 6, transitive: bool = False) -> str:
-	if letters < 3:
-		letters = 3
-	if words == 1:
-		return name(letters)
+    return separator.join(petname)
 
-	petname = []
-	for i in range(0, words - 2):
-		petname.append(adverb(letters))
-	petname.append(adjective(letters))
-	petname.append(name(letters))
-	
-	if transitive:
-		random.shuffle(petname)
-	return separator.join(petname)
-
-
-# aliases for backwards compatiblity
-Adverb = adverb
-Adjective = adjective
-Name = name
 Generate = generate
