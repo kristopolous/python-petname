@@ -46,18 +46,20 @@ def name(letters: int = 6) -> str:
 			return w
 
 
-def generate(words: int = 2, separator: str = "-", letters: int = 6) -> str:
+def generate(words: int = 2, separator: str = "-", letters: int = 6, transitive: bool = False) -> str:
 	if letters < 3:
 		letters = 3
 	if words == 1:
 		return name(letters)
-	elif words == 2:
-		return adjective(letters) + separator + name(letters)
+
 	petname = []
 	for i in range(0, words - 2):
 		petname.append(adverb(letters))
 	petname.append(adjective(letters))
 	petname.append(name(letters))
+	
+	if transitive:
+		random.shuffle(petname)
 	return separator.join(petname)
 
 
